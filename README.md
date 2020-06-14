@@ -1,9 +1,12 @@
 # Library-Database-Application
+
+### Summary:
 Designed and created a library database and an application using python and sqlite that allows users to find, borrow, return, donate items to the library and also find events, book rooms for events, register for events, volunteer for programs and ask for help from a librarian. The database also stores information of library personnel and library members.
 
-Project Specifications:
+### Project Specifications:
 
 This database is designed for a university library but it could be used for any library. This library database has the following characteristics:
+
 ●	Library has Items. All Items in the library are of three kinds- books, periodicals (journals, magazines etc.), audiovisuals (CD, DVD, cassette, records etc). Items are identified by an item ID. Other information such as title of the item, date of when it was produced, shelf where it is located in the library (shelf_num), whether it is currently available or not, if loaned- then the last borrow date, due date and if returned- then last return date are also stored. Each item also belongs to one of 7 categories namely Books-nonfiction, Books-fiction, Journal, Magazine, Movies, Music, Others.
 
 ●	A book can also have an edition and can indicate if it is available online or not. It can be authored by many authors. Each author is identified by an author ID and has an author first and last name. 
@@ -30,7 +33,61 @@ This database is designed for a university library but it could be used for any 
 
 ●	A library user can borrow many items and return many items. But each item can only be borrowed and returned by one person at a time. 
 
-An ERM has been designed based on these characteristics and can be found on the next page. 
+### Entity Relationship Model and Proposed relations
+An ERM of the database designed to reduce redundancies and anomalies can be found in the repository.
 
+#### Proposed Relations (all in BCNF):
+●	Item( item_id, cat_name, title, pub_date,availability, shelf_num, Person_ID<sup>FK-Person</sup> ,borrow_date, due_date,return_date)
+
+●	Person(Person_ID, first_name, last_name, address1, address2, city, state, zipCode, phone, email,gender,member_type, mem_startdate, mem_enddate,allow_borrow)
+
+●	Personnel(Person_ID<sup>FK-Person</sup>, job_startdate, job_enddate)
+
+●	Books( item_id<sup>FK-Item</sup>, edition, online)
+
+●	Periodicals(item_id<sup>FK-Item</sup> , issue, volume,online)
+
+●	Audiovisuals(item_id<sup>FK-Item</sup> , medium )
+
+●	Artist( artist_id, Artist_name)
+
+●	Author( author_id, first_name, last_name)
+
+●	Publisher(publisher_id, Publisher_name)
+
+●	Producer(producer_id, Producer_name)
+
+●	Volunteer_options(vol_name, vol_type, activity_desc ,hours_week)
+
+●	Help(help_id, help_type, help_desc, is_urgent, Person_ID<sup>FK-Person</sup>)
+
+●	Event( event_name, event_type, event_desc, date,  time, audience, has_food, room_number<sup>FK-Location</sup>)
+
+●	Location( floor, room_number)
+
+●	New_items( new_id,   new_title, Person_ID<sup>FK-Person</sup>, desc, cat_name, condition)
+
+●	Organizer( organizer_name, organizer_email)
+
+●	Register(event_name<sup>FK-Events</sup>, Person_ID<sup>FK-Person</sup>)
+
+●	Volunteer(Person_ID<sup>FK-Person</sup>, vol_name<sup>FK-Voluntter_options</sup>)
+
+●	Fines_on ( item_id<sup>FK-Item</sup> , Person_ID<sup>FK-Person</sup>, fine_date, fine_amount, fine_payed)
+
+●	Items_of_author( author_id <sup>FK-Author</sup> , item_id<sup>FK-Item</sup>)
+
+●	Items_of_Publisher( publisher_id <sup>FK-Publisher</sup> , item_id<sup>FK-Item</sup>)
+
+●	Items_of_Producer( producer_id <sup>FK-Producer</sup> , item_id<sup>FK-Item</sup>)
+
+●	Items_of_Artist(artist_id <sup>FK-Artist</sup>, item_id<sup>FK-Item</sup>)
+
+●	Event_by_Organizer(organizer_email<sup>FK-organizer</sup>, event_name<sup>FK-Events</sup>)
+
+### SQL Schemas, Populated Database
+The proposed relations were created using SQLite and the database was populated using random data generators. Each table has at least 10 tuples. 
+
+### Database Application
 The database application in python which uses this database allows a library user to find, borrow, return, donate items, find and register for events and also seek help from the library. 
 
